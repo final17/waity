@@ -1,0 +1,22 @@
+/* Fade-in 애니메이션 */
+.fade-in-row {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Hover 시 배경 색 변화 */
+  .MuiTableRow-root:hover {
+    background-color: #f1f1f1 !important;
+  }
+  
+  /* Fade-in 애니메이션 정의 */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

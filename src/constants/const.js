@@ -1,0 +1,39 @@
+const METHOD = {
+    GET : 'GET',
+    POST : 'POST',
+    PATCH : 'PATCH',
+    DELETE : 'DELETE',
+    PUT : 'PUT'
+}
+
+const RESERVATION_TYPE = {
+    WAIT: 'WAIT',
+    RESERVATION: 'RESERVATION'
+};
+
+const RESERVATION_STATUS = {
+    RESERVATION: 'RESERVATION',
+    CANCEL: 'CANCEL',
+    APPLY: 'APPLY',
+    COMPLETE: 'COMPLETE'
+};
+
+const PAYMENT_STATUS = {
+    PENDING: 'PENDING',
+    COMPLETED: 'COMPLETED',
+    CANCELLED: 'CANCELLED'
+};
+
+const SUMMARY_DATE = {
+    DAY : 'DAY',
+    WEEK : 'WEEK',
+    MONTH : 'MONTH'
+}
+
+export {
+    METHOD,
+    RESERVATION_TYPE,
+    RESERVATION_STATUS,
+    PAYMENT_STATUS,
+    SUMMARY_DATE
+}
