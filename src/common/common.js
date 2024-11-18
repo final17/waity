@@ -19,10 +19,3 @@ const formatDate = (date, format) => {
 export {
     formatDate
 }
-
-export const getFirstAndLastDayOfMonth = (month) => {
-    const [year, monthValue] = month.split('-').map(Number);
-    const firstDay = new Date(year, monthValue - 1, 1).toISOString().split('T')[0];
-    const lastDay = new Date(year, monthValue, 0).toISOString().split('T')[0];
-    return { firstDay, lastDay };
-};
