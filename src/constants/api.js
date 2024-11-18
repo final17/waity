@@ -26,7 +26,7 @@ export const API_ENDPOINTS = {
         create: (storeId) => `${API_BASE}/api/v1/owner/stores/${storeId}/menus`,
         detail: (storeId, menuId) => `${API_BASE}/api/v2/stores/${storeId}/menus/${menuId}`,
         update: (storeId, menuId) => `${API_BASE}/api/v1/owner/stores/${storeId}/menus/${menuId}`,
-        delete: (storeId, menuId) => `${API_BASE}/api/v2/owner/stores/${storeId}/menus/${menuId}`
+        delete: (storeId, menuId) => `${API_BASE}/api/v1/owner/stores/${storeId}/menus/${menuId}`
 
     },
     search: {
