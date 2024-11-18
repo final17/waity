@@ -6,6 +6,7 @@ import StoreCard from '../../components/store/StoreCard';
 import { useUserStore } from '../../hooks/useStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import { API_ENDPOINTS, fetchAPI } from '../../constants/api';
+import {auth} from "../../lib/auth";
 
 const UserStoreListPage = () => {
     const navigate = useNavigate();
@@ -145,7 +146,6 @@ const UserStoreListPage = () => {
                                 <StoreCard
                                     key={store.id}
                                     store={store}
-                                    onClick={() => navigate(`/stores/${store.id}`)}
                                 />
                             ))}
                         </div>

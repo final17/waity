@@ -2,6 +2,7 @@ import { Clock, MapPin, Star, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { STORE_PLACEHOLDER } from '../../constants/images';
 import Rating from '../common/Rating';
+import {auth} from "../../lib/auth";
 
 const StoreCard = ({ store }) => {
     const navigate = useNavigate();
@@ -48,7 +49,14 @@ const StoreCard = ({ store }) => {
     };
 
     return (
-        <div onClick={() => navigate(`/stores/${id}`)} className="bg-white border-b last:border-b-0 cursor-pointer hover:bg-gray-50">
+        <div onClick={() => {
+                if (auth.getAccessToken() === null) {
+                    alert("로그인 후 이용 가능합니다.");
+                    navigate("/login");
+                } else {
+                    navigate(`/stores/${id}`)
+                }
+            }} className="bg-white border-b last:border-b-0 cursor-pointer hover:bg-gray-50">
             <div className="relative aspect-video">
                 <img
                     src={image || STORE_PLACEHOLDER}

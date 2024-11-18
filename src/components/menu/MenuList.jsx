@@ -41,11 +41,8 @@ const MenuList = ({ storeId, isOwner = false }) => {
     }, [storeId, isOwner]);
 
     const handleMenuClick = (menu) => {
-        const userRole = auth.getUserRole();
-        if (userRole === "ROLE_USER") {
-            setQuantity(1);
-            setSelectedMenu(menu);
-        }
+        setQuantity(1);
+        setSelectedMenu(menu);
     };
 
     const increaseQuantity = () => {
