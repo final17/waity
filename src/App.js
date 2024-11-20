@@ -17,6 +17,9 @@ import WaitingManagePage from './pages/waiting/WaitingManagePage';  // 추가
 import StoreSearchPage from './pages/store/StoreSearchPage'
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute, AuthRoute } from './components/route/ProtectedRoutes';
+import UserLikesPage from './pages/user/UserLikesPage';
+
+import ChatbotPage from "./pages/chatbot/ChatbotPage";
 
 function App() {
     return (
@@ -42,6 +45,11 @@ function App() {
                         {/* 리뷰 */}
                         <Route path="/user/reviews" element={<UserReviewPage />} />
                         <Route path="/reviews/create/:storeId" element={<CreateReviewPage />} />
+
+                        {/* 챗봇 */}
+                        <Route path="/chatbot" element={<ChatbotPage />} />
+                        {/* 좋아요 */}
+                        <Route path="/likes" element={<UserLikesPage />} />
                     </Route>
 
                     {/* 점주 보호 라우트 */}

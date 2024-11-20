@@ -1,3 +1,4 @@
+// src/pages/store/UserStoreListPage.js
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
@@ -6,11 +7,10 @@ import StoreCard from '../../components/store/StoreCard';
 import { useUserStore } from '../../hooks/useStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import { API_ENDPOINTS, fetchAPI } from '../../constants/api';
-import {auth} from "../../lib/auth";
 
 const UserStoreListPage = () => {
     const navigate = useNavigate();
-    const { stores, loading, error, fetchStores } = useUserStore();
+    const { stores, loading, error, fetchStores, toggleStoreLike } = useUserStore();
     const [searchTerm, setSearchTerm] = useState('');
     const [initialized, setInitialized] = useState(false);
     const [autocompleteResults, setAutocompleteResults] = useState([]);
@@ -23,7 +23,7 @@ const UserStoreListPage = () => {
             fetchStores();
             setInitialized(true);
         }
-    }, [initialized]);
+    }, [initialized, fetchStores]);
 
     useEffect(() => {
         const fetchAutocomplete = async () => {
@@ -57,6 +57,15 @@ const UserStoreListPage = () => {
         });
     }, [searchTerm]);
 
+    const handleStoreLike = async (storeId) => {
+        try {
+            console.log('좋아요 버튼 클릭:', storeId);
+            await toggleStoreLike(storeId);
+        } catch (error) {
+            console.error('좋아요 처리 중 오류가 발생했습니다:', error);
+        }
+    };
+
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
@@ -78,8 +87,8 @@ const UserStoreListPage = () => {
         return parts.map((part, index) =>
             part.toLowerCase() === highlight.toLowerCase() ? (
                 <span key={index} className="text-blue-500 font-semibold">
-                    {part}
-                </span>
+                   {part}
+               </span>
             ) : (
                 part
             )
@@ -116,9 +125,12 @@ const UserStoreListPage = () => {
                                     onClick={() => handleAutocompleteClick(store)}
                                     className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
                                 >
-                                    <img src={store.image} alt={store.title} className="w-12 h-12 object-cover rounded mr-3" />
+                                    <img
+                                        src={store.image}
+                                        alt={store.title}
+                                        className="w-12 h-12 object-cover rounded mr-3"
+                                    />
                                     <div>
-                                        {/* 하이라이트 적용 */}
                                         <p className="text-gray-800 font-medium">
                                             {highlightMatch(store.title, searchTerm)}
                                         </p>
@@ -146,6 +158,7 @@ const UserStoreListPage = () => {
                                 <StoreCard
                                     key={store.id}
                                     store={store}
+                                    onLikeClick={handleStoreLike}
                                 />
                             ))}
                         </div>

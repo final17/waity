@@ -3,7 +3,6 @@ import { useState, useCallback } from 'react';
 import { API_ENDPOINTS, fetchAPI } from '../constants/api';
 import { STORE_PLACEHOLDER } from '../constants/images';
 
-
 const isStoreOpen = (openTime, closeTime) => {
     if (!openTime || !closeTime) return false;
 
@@ -36,9 +35,10 @@ const processStoreData = (store) => ({
     rating: store.rating || 0,
     reviewCount: store.reviewCount || 0,
     isOpen: isStoreOpen(store.openTime, store.closeTime),
-    image: convertImageUrl(store.image),  // 이미지 URL 변환 로직 추가
+    image: convertImageUrl(store.image),
     user: store.userOneResponseDto,
-    districtCategory: store.districtCategory || null
+    districtCategory: store.districtCategory || null,
+    likeCount: store.storeLikeCount || 0  // 좋아요 수 추가
 });
 
 export const useOwnerStore = () => {
@@ -148,7 +148,6 @@ export const useUserStore = () => {
     const searchStores = async (keyword, filters = {}) => {
         try {
             console.log(API_ENDPOINTS.search.search)
-            // POST 요청으로 keyword와 filters를 RequestBody로 전송
             const response = await fetchAPI(API_ENDPOINTS.search.search, {
                 method: 'POST',
                 headers: {
@@ -160,7 +159,7 @@ export const useUserStore = () => {
                         districtCategories: filters.districtCategories || [],
                         cuisineCategories: filters.cuisineCategories || []
                     },
-                    size: 10 // 검색 결과 수 제한
+                    size: 10
                 })
             });
             return response.data.stores;
@@ -186,7 +185,7 @@ export const useUserStore = () => {
         } finally {
             setLoading(false);
         }
-    }, [loading]); // loading을 dependency로 추가
+    }, [loading]);
 
     const fetchStoreDetail = async (storeId) => {
         if (!storeId) return;
@@ -202,6 +201,24 @@ export const useUserStore = () => {
         }
     };
 
+    const toggleStoreLike = async (storeId) => {
+        try {
+            console.log('좋아요 토글:', storeId);
+            const response = await fetchAPI(API_ENDPOINTS.store.toggleLike(storeId), {
+                method: 'PATCH'
+            });
+            console.log('좋아요 응답:', response);
+
+            // 목록 새로고침
+            await fetchStores();
+
+            return response.data;
+        } catch (error) {
+            console.error('좋아요 처리 중 오류:', error);
+            throw error;
+        }
+    };
+
     return {
         stores,
         store,
@@ -210,6 +227,7 @@ export const useUserStore = () => {
         searchStores,
         fetchStores,
         fetchStoreDetail,
+        toggleStoreLike,  // 새로 추가된 메서드
         setStore
     };
 };
