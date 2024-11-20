@@ -7,12 +7,12 @@ import StoreCard from '../../components/store/StoreCard';
 import { useUserStore } from '../../hooks/useStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import { API_ENDPOINTS, fetchAPI } from '../../constants/api';
-import {auth} from "../../lib/auth";
 
 const UserStoreListPage = () => {
     const navigate = useNavigate();
     const { stores, loading, error, fetchStores, toggleStoreLike } = useUserStore();
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchQuery, setSearchQuery] = useState(''); // 검색 버튼 클릭 시 사용하는 상태
     const [initialized, setInitialized] = useState(false);
     const [autocompleteResults, setAutocompleteResults] = useState([]);
     const [showAutocomplete, setShowAutocomplete] = useState(false);
@@ -54,9 +54,9 @@ const UserStoreListPage = () => {
         if (!Array.isArray(storeList)) return [];
         return storeList.filter(store => {
             if (!store || store.isDeleted) return false;
-            return store.title?.toLowerCase().includes(searchTerm.toLowerCase());
+            return store.title?.toLowerCase().includes(searchQuery.toLowerCase());
         });
-    }, [searchTerm]);
+    }, [searchQuery]); // 검색 버튼 클릭 시 사용되는 상태에 의존
 
     const handleStoreLike = async (storeId) => {
         try {
@@ -70,19 +70,15 @@ const UserStoreListPage = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
+            setSearchQuery(searchTerm); // 검색어를 검색 상태로 업데이트
             navigate(`/stores/search?q=${encodeURIComponent(searchTerm)}`);
-            setShowAutocomplete(false);  // 검색 시 자동완성 리스트 닫기
+            setShowAutocomplete(false); // 검색 시 자동완성 리스트 닫기
         }
     };
 
     const handleAutocompleteClick = (store) => {
-        if (auth.getAccessToken() === null) {
-            alert("로그인 후 이용 가능합니다.");
-            navigate("/login");
-        } else {
-            navigate(`/stores/${store.id}`);
-            setShowAutocomplete(false); // 클릭 시 자동완성 리스트 닫기
-        }
+        navigate(`/stores/${store.id}`);
+        setShowAutocomplete(false); // 클릭 시 자동완성 리스트 닫기
     };
 
     // 일치하는 부분을 하이라이트하는 함수
@@ -93,8 +89,8 @@ const UserStoreListPage = () => {
         return parts.map((part, index) =>
             part.toLowerCase() === highlight.toLowerCase() ? (
                 <span key={index} className="text-blue-500 font-semibold">
-                   {part}
-               </span>
+                    {part}
+                </span>
             ) : (
                 part
             )
