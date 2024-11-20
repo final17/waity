@@ -99,7 +99,8 @@ const ReservationButton = ({ store }) => {
                         time : formattedTime,
                         numberPeople : selectedPeople,
                         amount : totalAmount,
-                        orderName : store.title
+                        orderName : store.title,
+                        idempotentKey : customerKey
                     }
                 });
 
