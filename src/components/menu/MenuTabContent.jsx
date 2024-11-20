@@ -4,6 +4,7 @@ import { useMenu } from '../../hooks/useMenu';
 import MenuManageModal from './MenuManageModal';
 
 import { fetchAPI, API_ENDPOINTS } from '../../constants/api';
+import {useNavigate} from "react-router-dom";
 
 const MenuCard = ({ menu, storeId, onDelete, onSubmit }) => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -68,7 +69,7 @@ const MenuCard = ({ menu, storeId, onDelete, onSubmit }) => {
 
 const MenuTabContent = ({ storeId }) => {
     const { menus = [], loading, error, fetchOwnerMenus } = useMenu();
-
+    const navigate = useNavigate();
     useEffect(() => {
         fetchOwnerMenus(storeId);
     }, [storeId, fetchOwnerMenus]);
@@ -122,12 +123,14 @@ const MenuTabContent = ({ storeId }) => {
         <div className="p-4">
             <div className="flex justify-end mb-4">
                 <button
+                    onClick={() => navigate(`/owner/stores/${storeId}/menus/create`)}  // 'owner/' 추가
                     className="flex items-center gap-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                 >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4"/>
                     메뉴 등록
                 </button>
             </div>
+
             <div className="space-y-4">
                 {menus.length > 0 ? (
                     menus.map((menu) => (
