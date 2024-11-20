@@ -117,29 +117,29 @@ const UserStoreListPage = () => {
                     </form>
 
                     {/* 자동완성 리스트 */}
-                    {showAutocomplete && autocompleteResults.length > 0 && (
-                        <div className="absolute top-full left-0 w-full bg-white border border-t-0 shadow-lg z-20">
-                            {autocompleteResults.map(store => (
-                                <div
-                                    key={store.id}
-                                    onClick={() => handleAutocompleteClick(store)}
-                                    className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
-                                >
-                                    <img
-                                        src={store.image}
-                                        alt={store.title}
-                                        className="w-12 h-12 object-cover rounded mr-3"
-                                    />
-                                    <div>
-                                        <p className="text-gray-800 font-medium">
-                                            {highlightMatch(store.title, searchTerm)}
-                                        </p>
-                                        <p className="text-gray-500 text-sm">{store.address}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    {/*{showAutocomplete && autocompleteResults.length > 0 && (*/}
+                    {/*    <div className="absolute top-full left-0 w-full bg-white border border-t-0 shadow-lg z-20">*/}
+                    {/*        {autocompleteResults.map(store => (*/}
+                    {/*            <div*/}
+                    {/*                key={store.id}*/}
+                    {/*                onClick={() => handleAutocompleteClick(store)}*/}
+                    {/*                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"*/}
+                    {/*            >*/}
+                    {/*                <img*/}
+                    {/*                    src={store.image}*/}
+                    {/*                    alt={store.title}*/}
+                    {/*                    className="w-12 h-12 object-cover rounded mr-3"*/}
+                    {/*                />*/}
+                    {/*                <div>*/}
+                    {/*                    <p className="text-gray-800 font-medium">*/}
+                    {/*                        {highlightMatch(store.title, searchTerm)}*/}
+                    {/*                    </p>*/}
+                    {/*                    <p className="text-gray-500 text-sm">{store.address}</p>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        ))}*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
                 </div>
 
                 {/* 매장 목록 */}
