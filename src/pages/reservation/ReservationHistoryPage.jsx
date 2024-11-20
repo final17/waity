@@ -31,8 +31,6 @@ const ReservationHistoryPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [selectedReservation, setSelectedReservation] = useState(null);
-    const [menuList, setMenuList] = useState([]);
-    const [showMenuModal, setShowMenuModal] = useState(false);
 
     useEffect(() => {
         console.log('Is Authenticated:', isAuthenticated);
@@ -132,15 +130,7 @@ const ReservationHistoryPage = () => {
             }
 
             const data = await response.json();
-            console.log('Menu response data structure:', data);
-            if (!data.data || data.data.length === 0) {
-                alert('등록된 메뉴가 없습니다.');
-                return;
-            }
-
-            setMenuList(data.data);
-            setSelectedReservation(reservation);
-            setShowMenuModal(true);
+            navigate(`/reviews/create/${selectedReservation.storeId}/${data.data[0].menuId}`);
         } catch (error) {
             console.error('Failed to fetch menus:', error);
             alert(error.message);
@@ -197,37 +187,6 @@ const ReservationHistoryPage = () => {
                 return 'bg-gray-100 text-gray-800';
         }
     };
-
-    const MenuSelectionModal = () => (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="relative bg-white w-11/12 max-w-md mx-auto rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold mb-4">리뷰를 작성할 메뉴를 선택해주세요</h3>
-                <div className="space-y-3 max-h-[400px] overflow-y-auto">
-                    {menuList.map((menu) => (
-                        <button
-                            key={menu.id}
-                            onClick={() => {
-                                setShowMenuModal(false);
-                                navigate(`/reviews/create/${selectedReservation.storeId}/${menu.id}`);
-                            }}
-                            className="w-full p-4 text-left border rounded-lg hover:bg-gray-50 transition-colors"
-                        >
-                            <div className="font-medium">{menu.name}</div>
-                            <div className="text-sm text-gray-500 mt-1">
-                                {menu.price?.toLocaleString()}원
-                            </div>
-                        </button>
-                    ))}
-                </div>
-                <button
-                    onClick={() => setShowMenuModal(false)}
-                    className="w-full mt-4 py-3 bg-gray-100 rounded-lg text-gray-600 hover:bg-gray-200 transition-colors"
-                >
-                    닫기
-                </button>
-            </div>
-        </div>
-    );
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -334,7 +293,6 @@ const ReservationHistoryPage = () => {
                     )}
                 </div>
             </div>
-            {showMenuModal && <MenuSelectionModal />}
         </div>
     );
 };
