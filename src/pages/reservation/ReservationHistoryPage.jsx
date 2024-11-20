@@ -120,7 +120,7 @@ const ReservationHistoryPage = () => {
     const handleReviewClick = async (reservation) => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await fetch(`${API_ENDPOINTS.review.menus(reservation.id)}`, {
+            const response = await fetch(`${API_ENDPOINTS.review.menus(reservation.reserveId)}`, {
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json'
