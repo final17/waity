@@ -7,6 +7,7 @@ import StoreCard from '../../components/store/StoreCard';
 import { useUserStore } from '../../hooks/useStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import { API_ENDPOINTS, fetchAPI } from '../../constants/api';
+import {auth} from "../../lib/auth";
 
 const UserStoreListPage = () => {
     const navigate = useNavigate();
@@ -75,8 +76,13 @@ const UserStoreListPage = () => {
     };
 
     const handleAutocompleteClick = (store) => {
-        navigate(`/stores/${store.id}`);
-        setShowAutocomplete(false); // 클릭 시 자동완성 리스트 닫기
+        if (auth.getAccessToken() === null) {
+            alert("로그인 후 이용 가능합니다.");
+            navigate("/login");
+        } else {
+            navigate(`/stores/${store.id}`);
+            setShowAutocomplete(false); // 클릭 시 자동완성 리스트 닫기
+        }
     };
 
     // 일치하는 부분을 하이라이트하는 함수
@@ -117,29 +123,29 @@ const UserStoreListPage = () => {
                     </form>
 
                     {/* 자동완성 리스트 */}
-                    {/*{showAutocomplete && autocompleteResults.length > 0 && (*/}
-                    {/*    <div className="absolute top-full left-0 w-full bg-white border border-t-0 shadow-lg z-20">*/}
-                    {/*        {autocompleteResults.map(store => (*/}
-                    {/*            <div*/}
-                    {/*                key={store.id}*/}
-                    {/*                onClick={() => handleAutocompleteClick(store)}*/}
-                    {/*                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"*/}
-                    {/*            >*/}
-                    {/*                <img*/}
-                    {/*                    src={store.image}*/}
-                    {/*                    alt={store.title}*/}
-                    {/*                    className="w-12 h-12 object-cover rounded mr-3"*/}
-                    {/*                />*/}
-                    {/*                <div>*/}
-                    {/*                    <p className="text-gray-800 font-medium">*/}
-                    {/*                        {highlightMatch(store.title, searchTerm)}*/}
-                    {/*                    </p>*/}
-                    {/*                    <p className="text-gray-500 text-sm">{store.address}</p>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        ))}*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
+                    {showAutocomplete && autocompleteResults.length > 0 && (
+                        <div className="absolute top-full left-0 w-full bg-white border border-t-0 shadow-lg z-20">
+                            {autocompleteResults.map(store => (
+                                <div
+                                    key={store.id}
+                                    onClick={() => handleAutocompleteClick(store)}
+                                    className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                >
+                                    <img
+                                        src={store.image}
+                                        alt={store.title}
+                                        className="w-12 h-12 object-cover rounded mr-3"
+                                    />
+                                    <div>
+                                        <p className="text-gray-800 font-medium">
+                                            {highlightMatch(store.title, searchTerm)}
+                                        </p>
+                                        <p className="text-gray-500 text-sm">{store.address}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* 매장 목록 */}
