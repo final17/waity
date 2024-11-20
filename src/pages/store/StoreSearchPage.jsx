@@ -5,6 +5,7 @@ import { useUserStore } from '../../hooks/useStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import StoreCard from '../../components/store/StoreCard';
 import { API_ENDPOINTS, fetchAPI } from '../../constants/api';
+import {auth} from "../../lib/auth";
 
 const StoreSearchPage = () => {
     const navigate = useNavigate();
@@ -184,9 +185,14 @@ const StoreSearchPage = () => {
     };
 
     const handleAutocompleteClick = (store) => {
-        navigate(`/stores/${store.id}`);
-        setShowAutocomplete(false);
-        setShowFilterMenu(false);  // 가게 클릭 시 필터창도 닫기
+        if (auth.getAccessToken() === null) {
+            alert("로그인 후 이용 가능합니다.");
+            navigate("/login");
+        } else {
+            navigate(`/stores/${store.id}`);
+            setShowAutocomplete(false);
+            setShowFilterMenu(false);  // 가게 클릭 시 필터창도 닫기
+        }
     };
 
     return (
@@ -339,7 +345,14 @@ const StoreSearchPage = () => {
                             <StoreCard
                                 key={store.id}
                                 store={store}
-                                onClick={() => navigate(`/stores/${store.id}`)}
+                                onClick={() => {
+                                    if (auth.getAccessToken() === null) {
+                                        alert("로그인 후 이용 가능합니다.");
+                                        navigate("/login");
+                                    } else {
+                                        navigate(`/stores/${store.id}`);
+                                    }
+                                }}
                             />
                         ))}
                     </div>
