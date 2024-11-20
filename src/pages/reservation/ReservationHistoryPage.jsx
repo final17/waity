@@ -30,7 +30,6 @@ const ReservationHistoryPage = () => {
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [selectedReservation, setSelectedReservation] = useState(null);
 
     useEffect(() => {
         console.log('Is Authenticated:', isAuthenticated);
@@ -130,7 +129,7 @@ const ReservationHistoryPage = () => {
             }
 
             const data = await response.json();
-            navigate(`/reviews/create/${selectedReservation.storeId}/${data.data[0].menuId}`);
+            navigate(`/reviews/create/${reservation.storeId}/${data.data[0].menuId}`);
         } catch (error) {
             console.error('Failed to fetch menus:', error);
             alert(error.message);
